@@ -22,13 +22,13 @@
   // Add the labels to all resources and selectors.
   commonLabels(l):: function(o) (
     // Aside: The kustomize code is quite inconsistent on what it uses
-    // as the match criteria
+    // as the match criteria.
+    // Kustomize's list is in https://github.com/kubernetes-sigs/kustomize/blob/master/pkg/transformers/config/defaultconfig/commonlabels.go
     local gv = std.split(o.apiVersion, "/");
     local g = if std.length(gv) == 1 then "" else gv[0];
     local v = if std.length(gv) == 1 then gv[0] else gv[1];
     local k = o.kind;
     o + {
-      // kustomize's list is in https://github.com/kubernetes-sigs/kustomize/blob/master/pkg/transformers/config/defaultconfig/commonlabels.go
       metadata+: {labels+: l},
     } +
     if (v == "v1" && k == "Service") then {
@@ -178,7 +178,7 @@
   crds: error "TODO(gus): think about how to merge this with above functions",
 
   vars(vars):: function(o) (
-    error "FIXME"
+    error "FIXME: not yet implemented"
   ),
 
   // Modify image names/tags/digests.
@@ -211,9 +211,12 @@
       else f(x)
     );
     local updateContainer(o) = (
-      if std.isObject(o) && std.objectHas(o, "containers") then o + {
-        containers: [
+      if std.isObject(o) then o + {
+        [if std.objectHas(o, "containers") then "containers"]: [
           c + {image: std.foldl(newImage, images, super.image)} for c in super.containers
+        ],
+        [if std.objectHas(o, "initContainers") then "initContainers"]: [
+          c + {image: std.foldl(newImage, images, super.image)} for c in super.initContainers
         ],
       } else o
     );
