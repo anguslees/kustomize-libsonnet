@@ -1,10 +1,19 @@
+// Simple example of using kustomize.libsonnet to overlay changes to
+// an upstream repo - inspired by the kustomize example of adapting
+// "helloWorld" for staging.
+// https://github.com/kubernetes-sigs/kustomize/tree/master/examples/helloWorld
+//
+// Run me with:
+//  kubecfg show example.jsonnet
+//
+
 local kustomize = import "kustomize.libsonnet";
 local kubecfg = import "kubecfg.libsonnet";
 
 local input =
-  kubecfg.parseYaml(importstr "https://github.com/kubernetes-sigs/kustomize/raw/master/examples/helloWorld/deployment.yaml") +
-  kubecfg.parseYaml(importstr "https://github.com/kubernetes-sigs/kustomize/raw/master/examples/helloWorld/service.yaml") +
-  kubecfg.parseYaml(importstr "https://github.com/kubernetes-sigs/kustomize/raw/master/examples/helloWorld/configMap.yaml");
+  kubecfg.parseYaml(importstr "examples/deployment.yaml") +
+  kubecfg.parseYaml(importstr "examples/service.yaml") +
+  kubecfg.parseYaml(importstr "examples/configMap.yaml");
 
 // kubecfg doesn't support client-side strategic-merge-patch (yet),
 // but we can do better in jsonnet anyway:
