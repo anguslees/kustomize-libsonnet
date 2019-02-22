@@ -184,10 +184,6 @@
   // Modify image names/tags/digests.
   // `images` is an array of objects describing the desired modifications.
   images(images):: function(o) (
-    local gv = std.split(o.apiVersion, "/");
-    local g = if std.length(gv) == 1 then "" else gv[0];
-    local v = if std.length(gv) == 1 then gv[0] else gv[1];
-    local k = o.kind;
     local newImage(old, img) = (
       local nametag = std.split(old, ":");
       local name = nametag[0];
