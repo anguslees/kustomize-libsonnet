@@ -10,6 +10,11 @@
 local kustomize = import "kustomize.libsonnet";
 local kubecfg = import "kubecfg.libsonnet";
 
+// NB: kubecfg can import from URLs too, if you want to consume
+// upstream manifests directly from a remote repo (remember to use
+// "raw" URLs for github content).
+// Eg: kubecfg.parseYaml(importstr "https://github.com/kubernetes-sigs/kustomize/raw/master/examples/helloWorld/configMap.yaml")
+
 local input =
   kubecfg.parseYaml(importstr "examples/deployment.yaml") +
   kubecfg.parseYaml(importstr "examples/service.yaml") +
