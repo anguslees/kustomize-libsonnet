@@ -218,7 +218,7 @@
     local newImage(old, img) = (
       local nametag = std.split(old, ":");
       local name = nametag[0];
-      local tag = if std.length(nametag) > 1 then nametag else "latest";
+      local tag = if std.length(nametag) > 1 then nametag[1] else "latest";
       if name == img.name then (
         local newName = if std.objectHas(img, "newName") then img.newName else name;
         local newTag = if std.objectHas(img, "newTag") then img.newTag else tag;
