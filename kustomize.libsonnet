@@ -37,7 +37,7 @@
       "StorageClass",
       "VolumeAttachment",
     ]);
-    if !std.setMember(o.kind, nonNamespaced) then o + {
+    if std.objectHas(o, "kind") && !std.setMember(o.kind, nonNamespaced) then o + {
       metadata+: {
         namespace: ns
       }
